@@ -1,26 +1,39 @@
 import java.util.Scanner;
 
 public class Main {
+
     private static final long mainThreadId = Thread.currentThread().getId();
 
     public static void main(String[] args) throws InterruptedException {
+
         Scanner scanner = new Scanner(System.in);
 
         int start1 = scanner.nextInt();
         int end1 = scanner.nextInt();
+        System.out.println("start1: " + start1);
+        System.out.println("end1: " + end1);
 
         int start2 = scanner.nextInt();
         int end2 = scanner.nextInt();
+        System.out.println("start2: " + start2);
+        System.out.println("end2: " + end2);
 
         RangeAdder adder1 = new RangeAdder(start1, end1);
         RangeAdder adder2 = new RangeAdder(start2, end2);
+
+        adder1.start();
+        adder2.start();
+        // The join instance method on threads causes the current thread
+        // to wait for completion of its execution before executing another thread
+        adder1.join();
+        adder2.join();
 
         long partialSum1 = adder1.getSum();
         long partialSum2 = adder2.getSum();
 
         long sum = partialSum1 + partialSum2; 
 
-        System.out.println(sum);
+        System.out.println("sum ===> " + sum);
 
         scanner.close();
     }
@@ -47,6 +60,7 @@ public class Main {
             }
 
             long total = 0;
+
             for (int i = start; i <= end; i++) {
                 total += i;
             }
